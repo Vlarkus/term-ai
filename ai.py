@@ -9,15 +9,27 @@ from rich.live import Live
 from ollama import chat
 
 def main():
-    print("[bold cyan]Welcome to your AI chat! Type 'q', 'quit', or 'exit' to leave.[/bold cyan]\n")
+    
+    welcome_panel = Panel(
+        Align.center("[bold white]Welcome to your personal Terminal AI chat! Type 'q', 'quit', or 'exit' to leave.[/bold white]"),
+        border_style="cyan",
+        title="Terminal AI Chat",
+        box=box.ROUNDED,
+        expand=True,
+        padding=(1, 2),
+    )
+    print()
+    print(welcome_panel)
+    
     while True:
-        user_input = input(">>> ")
+        user_input = input("\n>>> ")
+        print()
         if user_input.strip().lower() in {"q", "quit", "exit"}:
-            print("[bold red]Goodbye![/bold red]")
+            print("[bold cyan]Goodbye![/bold cyan]\n")
             break
 
         # Show spinner while waiting for AI response
-        spinner = Spinner("dots", text="[bold green]Thinking...[/bold green]", style="green")
+        spinner = Spinner("dots", text="[bold white]Thinking...[/bold white]", style="green")
         with Live(spinner, refresh_per_second=10, transient=True):
             response = chat(
                 model="mistral",
@@ -35,6 +47,7 @@ def main():
             expand=True,
             padding=(1, 2),
         )
+        print()
         print(panel)
 
 if __name__ == "__main__":
