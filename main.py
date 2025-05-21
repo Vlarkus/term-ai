@@ -1,4 +1,5 @@
 import sys
+import subprocess
 from rich import print
 from rich.panel import Panel
 from rich.align import Align
@@ -9,7 +10,16 @@ from rich.spinner import Spinner
 from rich.live import Live
 from ollama import chat, list as ollama_list
 
-EXIT_COMMANDS = ["q", "quit", "exit", "bye", "leave"]
+"""
+    TODO:
+        - Separate the files into main.py /agents and /utils
+        - Add functionality to download models within this project
+        - Add functionality to use arrows to select models
+        - Add agent that would be able to search the web
+        - Integrate 
+"""
+
+EXIT_COMMANDS = ["q", "quit", "exit", "bye", "cya", "leave"]
 
 models = ollama_list()["models"]
 model_names = [m["model"] for m in models]
@@ -55,6 +65,7 @@ def get_user_input():
     
     
 def prompt_model():
+    global model  # <-- Add this line
     # Prompt user to select a model
     while True:
         model_input = get_user_input().strip()
@@ -75,15 +86,20 @@ def main():
     print_welcome_message()
 
     prompt_model()
+    
+    print(f"\n[bold][white]You have selected: [yellow]{model}[/yellow][white]\n\n[green]Initiating...[/green][/bold]")
 
     # Chat loop
     while True:
+        
+        print()
         user_input = get_user_input()
         if is_exit_command(user_input):
             exit_program()
             break
 
         # Show spinner while waiting for AI response
+        print()
         spinner = Spinner("dots", text="[bold white]Thinking...[/bold white]", style="green")
         with Live(spinner, refresh_per_second=10, transient=True):
             response = chat(
@@ -103,6 +119,8 @@ def main():
             padding=(1, 2),
         )
         print(panel)
+
+
 
 if __name__ == "__main__":
     main()
