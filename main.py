@@ -65,18 +65,26 @@ def get_user_input():
     
     
 def prompt_model():
-    global model  # <-- Add this line
-    # Prompt user to select a model
+    global model
     while True:
         model_input = get_user_input().strip()
         if is_exit_command(model_input):
             exit_program()
             return
-        if model_input in model_names:
+        # Allow selection by number
+        if model_input.isdigit():
+            idx = int(model_input)
+            if 1 <= idx <= len(model_names):
+                model = model_names[idx - 1]
+                break
+            else:
+                print(f"\n[bold red]Number '{model_input}' is out of range. Please enter a valid number or model name.[/bold red]\n")
+        # Allow selection by name
+        elif model_input in model_names:
             model = model_input
             break
         else:
-            print(f"\n[bold red]Model '{model_input}' not found. Please enter a valid model name.[/bold red]\n")
+            print(f"\n[bold red]Model '{model_input}' not found. Please enter a valid number or model name.[/bold red]\n")
     
     
         
