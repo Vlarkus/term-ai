@@ -109,7 +109,8 @@ def main():
                 ]
             )
 
-        ai_markdown = Markdown(response['message']['content'])
+        response_text = response['message']['content']
+        ai_markdown = Markdown(response_text)
         panel = Panel(
             Align.left(ai_markdown),
             title=model,
@@ -119,6 +120,9 @@ def main():
             padding=(1, 2),
         )
         print(panel)
+        # subprocess.run(["say", "-v", "Daniel", response_text]) # [WORKS] Uncomment this line to enable text-to-speech on macOS
+        # subprocess.run(["espeak", response_text]) # [UNTESTED] Uncomment this line to enable text-to-speech on Linux
+        # subprocess.run(["powershell", "-Command", f"Add-Type –AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{response_text}')"]) # [UNTESTED] Uncomment this line to enable text-to-speech on Windows
 
 
 
