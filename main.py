@@ -121,7 +121,7 @@ def main():
         ai_markdown = Markdown(response_text)
         panel = Panel(
             Align.left(ai_markdown),
-            title=model,
+            title=f"[bold white]{model}[/bold white]",
             border_style="cyan",
             box=box.ROUNDED,
             expand=True,
